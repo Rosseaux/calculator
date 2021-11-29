@@ -1,18 +1,49 @@
-
-//display function
+let firstNumber = "";
+let secondNumber = "";
 let display = document.querySelector(".display");
-display.textContent = "TESTING";
 
+const numbers = document.querySelectorAll("[data-number]");
+const operators = document.querySelectorAll("[data-operand]");
+const allClear = document.querySelector("[data-all-clear]");
+const equals = document.querySelector("[data-equals]");
 
+display.textContent = "";
 
-//operand switch statement
+//event listeners for input buttons
+numbers.forEach((number) => {
+    number.addEventListener("click", () => {
+        numberInput(number.textContent)
+    });
+});
+operators.forEach((operator) => {
+    operator.addEventListener("click", () => {
+        operatorInput(operator.textContent)
+    });
+});
+equals.addEventListener("click", () => {
+    calculate();
+});
+allClear.addEventListener("click", () => {
+    clearDisplay();
+});
 
+//add numbers to display
+function numberInput(number) {
+    if (number === "0") display.textContent = "";
+    display.textContent += number;
+}
+
+function operatorInput(operator) {
+    firstNumber = display.textContent;
+    display.textContent = operator + " ";
+}
 
 //clear function
-
-
-//keypad input function?
-
+function clearDisplay() {
+    display.textContent = "";
+    firstNumber = "";
+    secondNumber = "";
+}
 
 //calculator functions
 function multiply(a,b) {
@@ -31,9 +62,10 @@ function divide(a,b) {
     return a / b;
 }
 
+//operator switch statement to determine calculation
 function calculate(oper, a, b) {
     switch (oper) {
-        case "X":
+        case "x":
             return multiply(a,b);
         case "-":
             return subtract(a,b);
