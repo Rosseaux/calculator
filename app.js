@@ -4,14 +4,6 @@ let display = document.querySelector(".display");
 display.textContent = "TESTING";
 
 
-//button input function
-let buttons = document.querySelectorAll(".button");
-buttons.forEach(button => {
-    button.addEventListener("click", function() {
-        display.textContent = button.textContent;
-    });
-});
-    
 
 //operand switch statement
 
@@ -22,4 +14,33 @@ buttons.forEach(button => {
 //keypad input function?
 
 
-//
+//calculator functions
+function multiply(a,b) {
+    return a * b;
+}
+
+function add(a,b) {
+    return a + b;
+}
+
+function subtract(a,b) {
+    return a - b;
+}
+
+function divide(a,b) {
+    return a / b;
+}
+
+function calculate(oper, a, b) {
+    switch (oper) {
+        case "X":
+            return multiply(a,b);
+        case "-":
+            return subtract(a,b);
+        case "+":
+            return add(a,b);
+        case "%":
+            if (b === 0) return null;
+            else return divide(a,b);
+    }
+}
