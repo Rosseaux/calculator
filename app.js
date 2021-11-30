@@ -1,6 +1,8 @@
 let firstNumber = "";
 let secondNumber = "";
 let display = document.querySelector(".display");
+let secondDisplay = document.querySelector(".secondDisplay");
+let result = "";
 
 const numbers = document.querySelectorAll("[data-number]");
 const operators = document.querySelectorAll("[data-operand]");
@@ -8,6 +10,7 @@ const allClear = document.querySelector("[data-all-clear]");
 const equals = document.querySelector("[data-equals]");
 
 display.textContent = "";
+secondDisplay.textContent = "";
 
 //event listeners for input buttons
 numbers.forEach((number) => {
@@ -21,6 +24,8 @@ operators.forEach((operator) => {
     });
 });
 equals.addEventListener("click", () => {
+    firstNumber = secondDisplay.textContent;
+    secondNumber = display.textContent;
     calculate();
 });
 allClear.addEventListener("click", () => {
@@ -34,45 +39,50 @@ function numberInput(number) {
 }
 
 function operatorInput(operator) {
-    firstNumber = display.textContent;
-    display.textContent = operator + " ";
+    if (secondDisplay.textContent === "") {
+        secondDisplay.textContent = firstNumber + " " + operator;
+        display.textContent = "";
+    }
+
 }
 
 //clear function
 function clearDisplay() {
     display.textContent = "";
+    secondDisplay.textContent = "";
     firstNumber = "";
     secondNumber = "";
 }
 
 //calculator functions
-function multiply(a,b) {
-    return a * b;
+function multiply(firstNumber,secondNumber) {
+    return firstNumber * secondNumber;
 }
 
-function add(a,b) {
-    return a + b;
+function add(firstNumber,secondNumber) {
+    return firstNumber + secondNumber;
 }
 
-function subtract(a,b) {
-    return a - b;
+function subtract(firstNumber,secondNumber) {
+    return firstNumber - secondNumber;
 }
 
-function divide(a,b) {
-    return a / b;
+function divide(firstNumber,secondNumber) {
+    return firstNumber / secondNumber;
 }
 
 //operator switch statement to determine calculation
-function calculate(oper, a, b) {
+function calculate(oper, firstNumber, secondNumber) {
     switch (oper) {
         case "x":
-            return multiply(a,b);
+            result = multiply(firstNumber,secondNumber);
         case "-":
-            return subtract(a,b);
+            result = subtract(firstNumber,secondNumber);
         case "+":
-            return add(a,b);
+            result = add(firstNumber,secondNumber);
         case "%":
-            if (b === 0) return null;
-            else return divide(a,b);
+            if (secondNumber === 0) return null;
+            else result = divide(firstNumber,secondNumber);
+        
     }
 }

@@ -27,7 +27,23 @@ body {
     
 }
 
-
+.secondDisplay {
+    position: fixed;
+    width: 250px;
+    height: 35px;
+    background-color:black;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    margin-top: -1.9em;
+    margin-left: 23px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 22px;
+    text-align: center;
+    padding: 2px;
+}
 
 .display {
     display: flex;
