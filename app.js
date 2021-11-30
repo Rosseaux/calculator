@@ -1,8 +1,9 @@
 let firstNumber = "";
 let secondNumber = "";
+let calcOperator = "";
 let display = document.querySelector(".display");
 let secondDisplay = document.querySelector(".secondDisplay");
-let result = "";
+let result;
 
 const numbers = document.querySelectorAll("[data-number]");
 const operators = document.querySelectorAll("[data-operand]");
@@ -24,9 +25,10 @@ operators.forEach((operator) => {
     });
 });
 equals.addEventListener("click", () => {
-    firstNumber = secondDisplay.textContent;
     secondNumber = display.textContent;
-    calculate();
+    secondNumber = Number(secondNumber);
+    display.textContent = round(calculate(calcOperator, firstNumber, secondNumber));
+    
 });
 allClear.addEventListener("click", () => {
     clearDisplay();
@@ -40,10 +42,17 @@ function numberInput(number) {
 
 function operatorInput(operator) {
     if (secondDisplay.textContent === "") {
+        calcOperator = operator;
+        firstNumber = display.textContent;
+        firstNumber = Number(firstNumber);        
         secondDisplay.textContent = firstNumber + " " + operator;
         display.textContent = "";
     }
 
+}
+
+function round(number) {
+    return Math.round(number * 1000) / 1000;
 }
 
 //clear function
@@ -54,35 +63,38 @@ function clearDisplay() {
     secondNumber = "";
 }
 
-//calculator functions
-function multiply(firstNumber,secondNumber) {
-    return firstNumber * secondNumber;
-}
 
-function add(firstNumber,secondNumber) {
-    return firstNumber + secondNumber;
-}
-
-function subtract(firstNumber,secondNumber) {
-    return firstNumber - secondNumber;
-}
-
-function divide(firstNumber,secondNumber) {
-    return firstNumber / secondNumber;
-}
 
 //operator switch statement to determine calculation
-function calculate(oper, firstNumber, secondNumber) {
+function calculate(oper, a, b) {
+   
     switch (oper) {
         case "x":
-            result = multiply(firstNumber,secondNumber);
+            return multiply(a,b);
         case "-":
-            result = subtract(firstNumber,secondNumber);
+            return subtract(a,b);
         case "+":
-            result = add(firstNumber,secondNumber);
+            return add(a,b);
         case "%":
-            if (secondNumber === 0) return null;
-            else result = divide(firstNumber,secondNumber);
+            if (b === 0) return null;
+            else return divide(a,b);
         
     }
+}
+
+//calculator functions
+function multiply(a,b) {
+    return a * b;
+}
+
+function add(a,b) {
+    return a + b;
+}
+
+function subtract(a,b) {
+    return a - b;
+}
+
+function divide(a,b) {
+    return a / b;
 }
