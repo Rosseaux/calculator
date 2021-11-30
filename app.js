@@ -14,6 +14,7 @@ window.addEventListener("keydown", keyInput);
 
 display.textContent = "";
 secondDisplay.textContent = "";
+secondDisplay.style.display = "none";
 
 //event listeners for input buttons
 numbers.forEach((number) => {
@@ -21,17 +22,17 @@ numbers.forEach((number) => {
         numberInput(number.textContent)
     });
 });
+
 operators.forEach((operator) => {
     operator.addEventListener("click", () => {
         operatorInput(operator.textContent)
     });
 });
+
 equals.addEventListener("click", () => {
-    secondNumber = display.textContent;
-    secondNumber = Number(secondNumber);
-    display.textContent = round(calculate(calcOperator, firstNumber, secondNumber));
-    
+    execute();    
 });
+
 allClear.addEventListener("click", () => {
     clearDisplay();
 });
@@ -41,22 +42,38 @@ function numberInput(number) {
     display.textContent += number;
 }
 
+//return the calculation to the display
+function execute() {
+    secondNumber = display.textContent;
+    secondNumber = Number(secondNumber);
+    display.textContent = round(calculate(calcOperator, firstNumber, secondNumber));
+    secondDisplay.textContent = firstNumber + " " + calcOperator + " " + secondNumber;
+}
+
 //keyboard input
 function keyInput(e) {
     if (e.key >= 0 && e.key <= 9) numberInput(e.key);
+    if (e.key === "+") operatorInput("+");
+    if (e.key === "*") operatorInput("x");
+    if (e.key === "/") operatorInput("÷");
+    if (e.key === "-") operatorInput("-");
+    if (e.key === "=" || e.key === "Enter") execute();
+    if (e.key === "c" || e.key === "Escape") clearDisplay();
 }
 
+//takes the operator and moves the first number to the second display
 function operatorInput(operator) {
     if (secondDisplay.textContent === "") {
         calcOperator = operator;
         firstNumber = display.textContent;
-        firstNumber = Number(firstNumber);        
+        firstNumber = Number(firstNumber);
+        secondDisplay.style.display = "block";      
         secondDisplay.textContent = firstNumber + " " + operator;
         display.textContent = "";
     }
-
 }
 
+//rounds the final number
 function round(number) {
     return Math.round(number * 1000) / 1000;
 }
@@ -67,13 +84,11 @@ function clearDisplay() {
     secondDisplay.textContent = "";
     firstNumber = "";
     secondNumber = "";
+    secondDisplay.style.display = "none";
 }
-
-
 
 //operator switch statement to determine calculation
 function calculate(oper, a, b) {
-   
     switch (oper) {
         case "x":
             return multiply(a,b);
@@ -84,7 +99,6 @@ function calculate(oper, a, b) {
         case "÷":
             if (b === 0) return null;
             else return divide(a,b);
-        
     }
 }
 
