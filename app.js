@@ -10,6 +10,8 @@ const operators = document.querySelectorAll("[data-operand]");
 const allClear = document.querySelector("[data-all-clear]");
 const equals = document.querySelector("[data-equals]");
 
+window.addEventListener("keydown", keyInput);
+
 display.textContent = "";
 secondDisplay.textContent = "";
 
@@ -36,8 +38,12 @@ allClear.addEventListener("click", () => {
 
 //add numbers to display
 function numberInput(number) {
-    if (number === "0") display.textContent = "";
     display.textContent += number;
+}
+
+//keyboard input
+function keyInput(e) {
+    if (e.key >= 0 && e.key <= 9) numberInput(e.key);
 }
 
 function operatorInput(operator) {
@@ -75,7 +81,7 @@ function calculate(oper, a, b) {
             return subtract(a,b);
         case "+":
             return add(a,b);
-        case "%":
+        case "÷":
             if (b === 0) return null;
             else return divide(a,b);
         
