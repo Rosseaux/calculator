@@ -4,19 +4,25 @@ let calcOperator = "";
 let display = document.querySelector(".display");
 let secondDisplay = document.querySelector(".secondDisplay");
 let result;
+let readyToClear = false;
+let infoBoxStatus = false;
 
 const numbers = document.querySelectorAll("[data-number]");
 const operators = document.querySelectorAll("[data-operand]");
 const allClear = document.querySelector("[data-all-clear]");
 const equals = document.querySelector("[data-equals]");
-
-window.addEventListener("keydown", keyInput);
+const del = document.querySelector("[data-delete]");
+const infoButton = document.querySelector(".infoButton");
+const infoBox = document.querySelector(".infoBox");
 
 display.textContent = "";
 secondDisplay.textContent = "";
 secondDisplay.style.display = "none";
+infoBox.style.display = "none";
 
 //event listeners for input buttons
+window.addEventListener("keydown", keyInput);
+
 numbers.forEach((number) => {
     number.addEventListener("click", () => {
         numberInput(number.textContent)
@@ -37,6 +43,14 @@ allClear.addEventListener("click", () => {
     clearDisplay();
 });
 
+del.addEventListener("click", () => {
+    backspace();
+});
+
+infoButton.addEventListener("click", () => {
+    infoShow();
+});
+
 //add numbers to display
 function numberInput(number) {
     display.textContent += number;
@@ -48,17 +62,31 @@ function execute() {
     secondNumber = Number(secondNumber);
     display.textContent = round(calculate(calcOperator, firstNumber, secondNumber));
     secondDisplay.textContent = firstNumber + " " + calcOperator + " " + secondNumber;
+
+}
+
+//show/hide the info box
+function infoShow() {
+    if (infoBoxStatus === false) {
+        infoBox.style.display = "block";
+        infoBoxStatus = true;
+    }
+    else if (infoBoxStatus === true) {
+        infoBox.style.display = "none";
+        infoBoxStatus = false;
+    }
 }
 
 //keyboard input
 function keyInput(e) {
-    if (e.key >= 0 && e.key <= 9) numberInput(e.key);
+    if (e.key >= 0 && e.key <= 9 || e.key === ".") numberInput(e.key);
     if (e.key === "+") operatorInput("+");
     if (e.key === "*") operatorInput("x");
     if (e.key === "/") operatorInput("÷");
     if (e.key === "-") operatorInput("-");
     if (e.key === "=" || e.key === "Enter") execute();
     if (e.key === "c" || e.key === "Escape") clearDisplay();
+    if (e.key === "Backspace") backspace();
 }
 
 //takes the operator and moves the first number to the second display
@@ -85,6 +113,11 @@ function clearDisplay() {
     firstNumber = "";
     secondNumber = "";
     secondDisplay.style.display = "none";
+}
+
+//backspace/delete function
+function backspace() {
+    display.textContent = display.textContent.toString().slice(0, -1);
 }
 
 //operator switch statement to determine calculation
